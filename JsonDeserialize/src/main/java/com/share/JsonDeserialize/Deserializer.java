@@ -12,31 +12,28 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
 public class Deserializer<T> {
-	protected Class<T> typeOfT;
-	private ArrayList<T> listOfBeans;
+	private final Class<T> typeOfT;
+	private final String jsonFile;
 	private T bean;
-	private String jsonFile;
-
-	public Deserializer() {
-	}
+	private ArrayList<T> listOfBeans;
 
 	public Deserializer(final Class<T> typeOfT, final String jsonFile) {
 		this.typeOfT = typeOfT;
 		this.jsonFile = jsonFile;
 	}
 
-	public T getBean() throws Exception {
+	public T getABean() throws Exception {
 		makeABean(getJsonObject(getJsonReader()));
 		return this.bean;
-	}
-
-	private void makeABean(final JsonObject jsonObject) {
-		this.bean = new Gson().fromJson(jsonObject, this.typeOfT);
 	}
 
 	public ArrayList<T> getListOfBeans() throws Exception {
 		makeAListOfBeans(getJsonArray(getJsonReader()));
 		return this.listOfBeans;
+	}
+
+	private void makeABean(final JsonObject jsonObject) {
+		this.bean = new Gson().fromJson(jsonObject, this.typeOfT);
 	}
 
 	private void makeAListOfBeans(final JsonArray jsonArray) {
