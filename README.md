@@ -7,3 +7,4 @@ A simple JSON deserializer from File. Reading JSON data from file into Java Bean
 This project will serve as a utility class, just to save from the repeatations. Under the hood, it uses Gson library, and some Java generics and reflection tricks. The utility assumes that the input file is having well-formed JSON object or JSON array of objects. It does not handle extensive exception handling. 
 
 # Usage
+Please refer JUnit Tests provided with project.
