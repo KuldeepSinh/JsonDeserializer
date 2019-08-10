@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ public class TestDeserializer {
 	@Test
 	public void shouldDeserializeAListOfJsonObjectsTest() {
 		try {
-			final ArrayList<Person> personList = new Deserializer<Person>(Person.class,
+			final List<Person> personList = new Deserializer<Person>(Person.class,
 					JsonFilePathHelper.getAListOfPersonsJsonFilePath()).getListOfBeans();
 			assertEquals(2, personList.size());
 		} catch (final Exception e) {
