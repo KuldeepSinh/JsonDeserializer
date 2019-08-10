@@ -16,6 +16,11 @@ public class TestDeserializer {
 			final ArrayList<Person> personList = new Deserializer<Person>(Person.class,
 					JsonFilePathHelper.getAListOfPersonsJsonFilePath()).getListOfBeans();
 			assertEquals(2, personList.size());
+			// inspect contents of the List
+			assertEquals("Alice", personList.get(0).getFirstName());
+			assertEquals("Wonderland", personList.get(0).getLastName());
+			assertEquals("Bob", personList.get(1).getFirstName());
+			assertEquals("Fantastic", personList.get(1).getLastName());
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail();

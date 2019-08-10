@@ -7,15 +7,12 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
 public class Deserializer<T> {
 	private final Class<T> typeOfT;
 	private final String jsonFile;
-	private T bean;
-	private ArrayList<T> listOfBeans;
 
 	public Deserializer(final Class<T> typeOfT, final String jsonFile) {
 		this.typeOfT = typeOfT;
@@ -23,34 +20,22 @@ public class Deserializer<T> {
 	}
 
 	public T getABean() throws Exception {
-		makeABean(getJsonObject(getJsonReader()));
-		return this.bean;
+		return new Gson().fromJson(getJsonReader(), this.typeOfT);
 	}
 
 	public ArrayList<T> getListOfBeans() throws Exception {
-		makeAListOfBeans(getJsonArray(getJsonReader()));
-		return this.listOfBeans;
-	}
-
-	private void makeABean(final JsonObject jsonObject) {
-		this.bean = new Gson().fromJson(jsonObject, this.typeOfT);
-	}
-
-	private void makeAListOfBeans(final JsonArray jsonArray) {
 		final Gson gson = new Gson();
-		this.listOfBeans = new ArrayList<T>();
-		for (final JsonElement jsonElement : jsonArray) {
+		final ArrayList<T> listOfBeans = new ArrayList<T>();
+		for (final JsonElement jsonElement : getJsonArray(getJsonReader())) {
 			final T aBean = gson.fromJson(jsonElement, this.typeOfT);
-			this.listOfBeans.add(aBean);
+			listOfBeans.add(aBean);
 		}
+		return listOfBeans;
+
 	}
 
 	private JsonArray getJsonArray(final JsonReader reader) {
 		return new JsonParser().parse(reader).getAsJsonArray();
-	}
-
-	private JsonObject getJsonObject(final JsonReader reader) {
-		return new JsonParser().parse(reader).getAsJsonObject();
 	}
 
 	private JsonReader getJsonReader() throws Exception {
