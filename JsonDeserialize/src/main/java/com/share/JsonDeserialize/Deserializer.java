@@ -2,11 +2,12 @@ package com.share.JsonDeserialize;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
 public class Deserializer<T> {
@@ -22,11 +23,18 @@ public class Deserializer<T> {
 		return new Gson().fromJson(getJsonReader(), this.typeOfT);
 	}
 
-	public List<T> getListOfBeans() throws Exception {
-		final Type listType = new TypeToken<List<T>>() {
-		}.getType();
+	public ArrayList<T> getListOfBeans() throws Exception {
+		final ArrayList<T> listOfBeans = new ArrayList<T>();
+		for (final JsonElement jsonElement : getJsonArray(getJsonReader())) {
+			final T aBean = new Gson().fromJson(jsonElement, this.typeOfT);
+			listOfBeans.add(aBean);
+		}
+		return listOfBeans;
 
-		return new Gson().fromJson(getJsonReader(), listType);
+	}
+
+	private JsonArray getJsonArray(final JsonReader reader) {
+		return new JsonParser().parse(reader).getAsJsonArray();
 	}
 
 	private JsonReader getJsonReader() throws Exception {
